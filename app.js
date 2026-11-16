@@ -257,5 +257,5 @@ function guestInit() { document.body.innerHTML = `<div class="phone" id="ph"></d
 function gate() { if (sessionStorage.getItem("hs11pin") === "1" || Q.get("pin") === "2311") { sessionStorage.setItem("hs11pin", "1"); return boardInit(); }
   document.body.innerHTML = `<div class="home"><div class="card" style="max-width:420px;text-align:center"><div style="font-size:50px">👩‍🏫</div><h2>Мұғалім кіруі</h2><input type="text" id="pin" inputmode="numeric" placeholder="PIN" style="text-align:center;font-size:28px"><button class="btn" id="pgo" style="margin-top:10px;width:100%">Кіру</button><p class="mut small"><a href="index.html">← Басты бет</a></p></div></div>`;
   const ok = () => { if ($("#pin").value.trim() === "2311") { sessionStorage.setItem("hs11pin", "1"); boardInit(); } else $("#pin").animate([{ transform: "translateX(-8px)" }, { transform: "translateX(8px)" }, { transform: "none" }], 300); };
-  $("#pgo").onclick = ok; $("#pin").onkeydown = e => e.key === "Enter" && ok(); }
+  $("#pgo").onclick = ok; $("#pin").onkeydown = e => { if (e.key === "Enter") ok(); }; $("#pin").focus(); }
 MODE === "stu" ? stuInit() : MODE === "guest" ? guestInit() : gate();
