@@ -205,7 +205,7 @@ R.lab = () => { let tab = LS.get("labtab", "meg"), sel = null, sum = false; cons
 /* 7. Пікір таразысы */
 R.debate = () => { const dv = LS.get("deb", { yes: 0, no: 0, shy: [], shn: [], out: 0 });
   const draw = () => { const cv = Object.values(CLOUD.votes || {}), y = dv.yes + cv.filter(v => v === "yes").length, n = dv.no + cv.filter(v => v === "no").length, t = Math.max(1, y + n);
-    $("#body").innerHTML = `<div class="card" style="text-align:center;font-size:28px;font-weight:900;margin-bottom:12px">⚖️ ${esc(D.debate.q)}</div>
+    $("#body").innerHTML = `<div class="card" style="display:flex;align-items:center;gap:14px;font-size:28px;font-weight:900;margin-bottom:12px"><span style="flex:1;text-align:center">⚖️ ${esc(D.debate.q)}</span><span class="qmini" title="Оқушы дауысы">${qrSvg(stuUrl, { logo: "🎒" })}<small>🎒 телефонмен дауыс</small></span></div>
     <div class="deb"><div class="card side" style="border-top:8px solid var(--red)"><h3>✋ Иә, басты себеп</h3>${D.debate.yes.map((a, k) => `<div class="arg${dv.shy.includes(k) ? " show" : ""}" data-y="${k}">${esc(a)}</div>`).join("")}</div>
       <div class="card side" style="border-top:8px solid var(--leaf)"><h3>🙅 Жоқ, жалғыз себеп емес</h3>${D.debate.no.map((a, k) => `<div class="arg${dv.shn.includes(k) ? " show" : ""}" data-n="${k}">${esc(a)}</div>`).join("")}</div></div>
     <div class="card" style="margin-top:12px"><div class="votes"><button class="btn" style="background:var(--red)" data-v="yes">Иә +1</button><b style="color:var(--red)">${y}</b>
@@ -228,21 +228,81 @@ R.solo = () => { let key = false;
     <div style="display:flex;gap:10px;margin-top:14px;align-items:center"><button class="btn ${key ? "ghost" : "sun"}" id="kB">${key ? "🙈 Кілтті жасыру" : "🔑 Кілтті көрсету (өзара тексеру)"}</button>${ptBtns()}</div>`;
     $("#kB").onclick = () => { key = !key; draw(); }; };
   draw(); };
-/* 9. Экологиялық із: бағалау · кері байланыс · үй тапсырмасы */
-R.end = () => { const ft = LS.get("feet", {});
-  const draw = () => { const cf = Object.values(CLOUD.feet || {}), all = { ...ft }; cf.forEach(f => { if (f && f.n) all[f.n] = f.c; });
-    const cnt = k => Object.values(all).filter(v => v === k).length, ls = Object.values(CLOUD.letters || {}).filter(Boolean).slice(-4), gs = Object.values(CLOUD.guests || {}).filter(x => x && x.s != null);
-    const p = S.pts, best = Math.max(...D.groups.map(g => p[g.k] || 0));
-    $("#body").innerHTML = `<div class="feet"><div><div class="card" style="padding:10px 16px"><h3 style="margin-bottom:4px">👣 Менің экологиялық ізім</h3><div class="small mut">Тақтаға шығып, атыңды бас: 🟢 → 🟡 → 🔴. Сабақтан қандай із қалды?</div>
-      <div class="names" style="margin-top:8px">${D.roster.map(n => { const c = all[n]; const f = D.footprints.find(x => x.k === c); return `<button class="nm" data-f="${esc(n)}" style="${f ? `background:${f.c};color:#fff` : ""}">${f ? "👣 " : ""}${esc(n)}</button>`; }).join("")}</div>
-      <div style="display:flex;gap:10px;margin-top:10px">${D.footprints.map(f => `<div class="fb" style="--fc:${f.c};flex:1;font-size:16px">${esc(f.n)}<b>${cnt(f.k)}</b></div>`).join("")}</div></div>
-      <div class="card" style="margin-top:12px;padding:10px 16px"><h3 style="margin-bottom:4px">✉️ 2050 жылғы адамға хат</h3><div class="small">Дәптерге 2 сөйлем: «2050 жылы сен ... . Біз 2026 жылы ... үшін ... істедік.»</div>
-      ${ls.map(l => `<div class="small" style="background:#F3FAFB;border-radius:10px;padding:6px 10px;margin-top:6px">✉️ ${esc(l)}</div>`).join("")}</div></div>
-    <div><div class="card" style="padding:10px 16px"><h3 style="margin-bottom:4px">🏆 Топтардың ұпайы</h3>${D.groups.map(g => `<div style="display:flex;align-items:center;gap:10px;font-size:20px;font-weight:900;color:${g.c};margin:4px 0">${g.i} ${g.n}<span style="margin-left:auto">${p[g.k] || 0}${best > 0 && (p[g.k] || 0) === best ? " 🏆" : ""}</span></div>`).join("")}</div>
-      <div class="card hwl" style="padding:10px 16px"><h3 style="margin-bottom:2px">🏠 Үй тапсырмасы (таңдау бойынша)</h3>${D.homework.map(h => `<div><b>${h.lv}</b><span>${esc(h.t)}</span></div>`).join("")}</div>
-      <div class="card" style="margin-top:12px;padding:10px 16px"><b>👥 Қонақтардың «сабақ EPI индексі»:</b> <span style="font-size:28px;font-weight:900;color:var(--leaf)">${gs.length ? Math.round(gs.reduce((a, x) => a + (+x.s || 0), 0) / gs.length) : "—"}</span><span class="mut"> / 100 · ${gs.length} баға</span></div></div></div>`;
-    $$("[data-f]").forEach(b => b.onclick = () => { const n = b.dataset.f, o = ["g", "y", "r", undefined], cur = ft[n]; const nx = o[(o.indexOf(cur) + 1) % 4]; if (nx) ft[n] = nx; else delete ft[n]; LS.set("feet", ft); chime(nx === "g" ? 800 : nx === "y" ? 640 : 480); draw(); }); };
+const qrCard = (who, title, sub) => { const s = who === "g" ? { u: guestUrl, c1: "#D99A1E", c2: "#E8573A", logo: "👥", bc: "#D99A1E" } : { u: stuUrl, c1: "#0E7C9B", c2: "#1F9D6B", logo: "🎒", bc: "#1F9D6B" };
+  return `<div class="qrc" style="--bc:${s.bc}"><div class="qi">${qrSvg(s.u, s)}</div><div><b>${title}</b><span>${sub}</span></div></div>`; };
+/* 0. Сәлемдесу: «Әлем — бір шаңырақ» (ұлттардың тулары) + «Көңіл-күй индексі» */
+R.hello = () => { const said = LS.get("flagsd", []), md = LS.get("mood", { g: 0, y: 0, r: 0 }); let cur = null, open = false;
+  const draw = () => { const tot = md.g + md.y + md.r, idx = tot ? Math.round(D.moods.reduce((a, m) => a + md[m.k] * m.v, 0) / tot) : null;
+    const col = idx == null ? "#5B6B80" : idx >= 60 ? "#1F9D6B" : idx >= 40 ? "#E3A21A" : "#D9452B", F = cur != null ? D.flags[cur] : null;
+    $("#body").innerHTML = `<div style="display:grid;grid-template-columns:1.45fr 1fr;gap:18px;height:100%">
+    <div class="card" style="position:relative;display:flex;flex-direction:column"><div style="display:flex;align-items:center;gap:12px"><h3 style="margin:0;flex:1">🌍 Әлем — бір шаңырақ: туды тап!</h3><button class="btn sun" id="dice">🎲 Кездейсоқ ту</button></div>
+      <div class="mut small" style="margin:4px 0 8px">Жерде 195-тен астам ел, 8 миллиардтан астам адам. Қазақстанда 130-дан астам ұлттың өкілі бір шаңырақ астында тұрады. Ту шықса — сынып елді, астанасын, халқын табады.</div>
+      <div class="fwall">${D.flags.map((f, k) => `<button class="fl${said.includes(k) ? " on" : ""}${k === cur ? " cur" : ""}" data-fl="${k}" title="${esc(f.n)}"><img src="flags/${f.c}.svg" alt=""></button>`).join("")}</div>
+      ${F ? `<div class="fbig"><img src="flags/${F.c}.svg" alt=""><div>${open ? `<b>${esc(F.n)}</b><span>🏛️ Астанасы: ${esc(F.cap)}</span><span>👥 Халқы: ${esc(F.p)} (шамамен)</span>` : `<b>Бұл қай ел?</b><span>Астанасы? Халқы қанша?</span><button class="btn" id="opn">Ашу</button>`}</div><button class="mx" id="cls">✕</button></div>` : ""}</div>
+    <div class="card"><h3>🌡️ Сыныптың «көңіл-күй индексі»</h3><div class="mut small">EPI секілді: 0–100. Қол көтергендерді санап, батырманы басыңыз.</div>
+      <div style="display:grid;gap:8px;margin-top:8px">${D.moods.map(m => `<div class="mrow" style="--mc:${m.c}"><div><b>${m.n}</b><small>${m.d}</small></div><button data-md="${m.k}" data-n="-1">−</button><span>${md[m.k]}</span><button data-md="${m.k}" data-n="1">+</button></div>`).join("")}</div>
+      <div style="text-align:center;margin-top:6px"><span class="mut" style="font-weight:800">Бүгінгі индекс: </span><b style="font-size:54px;line-height:1;color:${col}">${idx ?? "—"}</b>
+      <div class="small" style="font-weight:800;color:${col}">${idx == null ? "" : idx >= 60 ? "Жоғары сапа — сабақты бастаймыз! 🚀" : idx >= 40 ? "Орташа — сабақ барысында көтереміз! 💪" : "Төмен — бір-бірімізге көмектесеміз! 🤝"}</div></div>
+      ${qrCard("g", "👥 Құрметті қонақтар!", "Сканерлеңіз: сабақ жоспары және бағалау")}</div></div>`;
+    const pick = k => { cur = k; open = false; if (!said.includes(k)) said.push(k); LS.set("flagsd", said); chime(560 + (k % 8) * 50); draw(); };
+    $$("[data-fl]").forEach(b => b.onclick = () => pick(+b.dataset.fl));
+    $("#dice").onclick = () => { const rest = D.flags.map((_, k) => k).filter(k => !said.includes(k)); const pool = rest.length ? rest : D.flags.map((_, k) => k); pick(pool[Math.floor(Math.random() * pool.length)]); };
+    if ($("#opn")) $("#opn").onclick = () => { open = true; chime(880); draw(); };
+    if ($("#cls")) $("#cls").onclick = () => { cur = null; draw(); };
+    $$("[data-md]").forEach(b => b.onclick = () => { const k = b.dataset.md; md[k] = Math.max(0, md[k] + +b.dataset.n); LS.set("mood", md); draw(); }); };
+  draw(); };
+/* 10. Бағалау · рейтинг */
+R.score = () => { const p = S.pts, gr = S.grp, srt = [...D.groups].sort((a, b) => (p[b.k] || 0) - (p[a.k] || 0)), mx = Math.max(1, ...D.groups.map(g => p[g.k] || 0)), med = ["🥇", "🥈", "🥉"];
+  const gs = Object.values(CLOUD.guests || {}).filter(x => x && x.s != null);
+  $("#body").innerHTML = `<div style="display:grid;grid-template-columns:1.3fr 1fr;gap:18px;height:100%"><div class="card"><h3>🏆 Топтардың рейтингі</h3>
+    ${srt.map((g, k) => `<div style="display:flex;align-items:center;gap:14px;margin:14px 0"><span style="font-size:44px">${(p[g.k] || 0) > 0 ? med[k] : "▫️"}</span><span style="font-size:40px">${g.i}</span>
+      <div style="flex:1"><b style="font-size:24px;color:${g.c}">${g.n}</b><div style="height:26px;background:#EEF2F4;border-radius:14px;margin-top:4px;overflow:hidden"><div style="height:100%;width:${(p[g.k] || 0) / mx * 100}%;background:${g.c};border-radius:14px;transition:width 1s"></div></div>
+      <small class="mut">${Object.values(gr).filter(v => v === g.k).length} оқушы</small></div><b style="font-size:46px;color:${g.c}">${p[g.k] || 0}</b></div>`).join("")}</div>
+    <div><div class="card"><h3>📄 Жеке ұпай → балл</h3><div class="small mut">Жұмыс парақтары мен тақтадағы жауаптар бойынша · барлығы 10 ұпай</div>
+      <table class="cv"><tr><th>Ұпай</th><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>0–2</td></tr><tr><th>Балл</th><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td></tr></table></div>
+      <div class="card" style="margin-top:12px"><b>👥 Қонақтардың «сабақ EPI индексі»:</b> <span style="font-size:34px;font-weight:900;color:var(--leaf)">${gs.length ? Math.round(gs.reduce((a, x) => a + (+x.s || 0), 0) / gs.length) : "—"}</span><span class="mut"> / 100 · ${gs.length} баға</span></div>${qrCard("g", "👥 Қонақтар, сабақты бағалаңыз!", "«Сабақтың EPI индексі» 0–100 · пікіріңіз")}</div></div>`;
+  onCloud = () => { if (D.stages[S.i].id === "score") R.score(); }; };
+/* 11. Кері байланыс: теңіз жағасы — оқушылар 👣 аяқ ізі, мұғалімдер мен қонақтар 🖐️ қол ізі, 🍾 бөтелкедегі хат */
+const FOOT = c => `<g fill="${c}"><ellipse cx="0" cy="8" rx="9" ry="15"/><ellipse cx="0" cy="-12" rx="7" ry="6"/><circle cx="-7" cy="-22" r="3"/><circle cx="-2" cy="-25" r="3.2"/><circle cx="3.5" cy="-24.5" r="2.8"/><circle cx="7.5" cy="-21.5" r="2.4"/><circle cx="10" cy="-17" r="2"/></g>`;
+const HAND = c => `<g fill="${c}"><rect x="-15" y="-6" width="30" height="30" rx="12"/><rect x="-15" y="-30" width="7" height="26" rx="3.5"/><rect x="-6.5" y="-36" width="7" height="32" rx="3.5"/><rect x="2" y="-34" width="7" height="30" rx="3.5"/><rect x="10" y="-26" width="6.5" height="22" rx="3.2"/><rect x="-27" y="2" width="16" height="7" rx="3.5" transform="rotate(-38 -19 5)"/></g>`;
+const FC = { g: "#1F9D6B", y: "#E3A21A", r: "#D9452B" };
+R.feedback = () => { const ft = LS.get("feet", {}), hands = LS.get("hands", []);
+  const draw = () => { const all = { ...ft }; Object.values(CLOUD.feet || {}).forEach(f => { if (f && f.n) all[f.n] = f.c; });
+    const gh = Object.entries(CLOUD.guests || {}).filter(([, x]) => x && x.s != null).map(([k, x]) => ({ c: x.s >= 60 ? "g" : x.s >= 40 ? "y" : "r", n: x.n || "Қонақ", s: x.s, id: k }));
+    const H = [...hands.map((c, k) => ({ c, n: "Мұғалім " + (k + 1), id: "m" + k })), ...gh];
+    const ls = Object.values(CLOUD.letters || {}).filter(Boolean).slice(-4);
+    const N = D.roster.length, W = 1544, SH = 640, shore = 205;
+    let svg = "";
+    D.roster.forEach((n, k) => { const x = 70 + k * ((W - 140) / (N - 1)), y = 395 + 62 * Math.sin(k * .62) + (k % 2 ? 22 : -22), rot = 75 + 25 * Math.cos(k * .62), c = all[n];
+      svg += `<g class="fp${c ? " on" : ""}" data-f="${esc(n)}" transform="translate(${x.toFixed(0)} ${y.toFixed(0)})"><rect x="-34" y="-36" width="68" height="78" fill="transparent"/>
+        <g transform="rotate(${rot.toFixed(0)})">${c ? FOOT(FC[c]) : `<g fill="none" stroke="#B8935A" stroke-width="2" stroke-dasharray="4 3"><ellipse cx="0" cy="8" rx="9" ry="15"/><ellipse cx="0" cy="-12" rx="7" ry="6"/></g>`}</g>
+        <text y="44" text-anchor="middle" class="fpn">${esc(n)}</text></g>`; });
+    H.forEach((h, k) => { const x = 600 + (k % 13) * 70, y = shore + 58 + Math.floor(k / 13) * 64 + (k % 2) * 8;
+      svg += `<g transform="translate(${x} ${y}) rotate(${(k * 37) % 30 - 15})" opacity=".92">${HAND(FC[h.c])}</g><text x="${x}" y="${y + 40}" text-anchor="middle" class="hpn">${esc(String(h.n).slice(0, 12))}${h.s != null ? " · " + h.s : ""}</text>`; });
+    ls.forEach((l, k) => { const x = 760 + k * 110; svg += `<g class="bottle" style="animation-delay:${k * .7}s" transform="translate(${x} ${110 + (k % 2) * 40})"><text font-size="38" text-anchor="middle">🍾</text></g>`; });
+    const cnt = k => Object.values(all).filter(v => v === k).length;
+    $("#body").innerHTML = `<div class="beach"><svg viewBox="0 0 ${W} ${SH}" preserveAspectRatio="none">
+      <defs><linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0E6E8C"/><stop offset="1" stop-color="#3FB6C9"/></linearGradient>
+      <linearGradient id="sand" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E8CFA0"/><stop offset="1" stop-color="#F6E6C4"/></linearGradient>
+      <pattern id="grain" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="4" cy="6" r="1" fill="#C9A86E" opacity=".45"/><circle cx="15" cy="15" r="1.2" fill="#C9A86E" opacity=".35"/><circle cx="18" cy="3" r=".8" fill="#fff" opacity=".6"/></pattern></defs>
+      <rect width="${W}" height="${SH}" fill="url(#sand)"/><rect width="${W}" height="${SH}" fill="url(#grain)"/>
+      <path d="M0 0H${W}V${shore - 20}C${W * .8} ${shore + 20} ${W * .6} ${shore - 40} ${W * .4} ${shore}S${W * .1} ${shore - 30} 0 ${shore}Z" fill="url(#sea)"/>
+      <path class="wave" d="M0 ${shore}C${W * .1} ${shore - 30} ${W * .3} ${shore + 10} ${W * .4} ${shore}S${W * .8} ${shore + 20} ${W} ${shore - 20}" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".8"/>
+      <path d="M${W * .52} ${shore + 18}C${W * .6} ${shore + 4} ${W * .7} ${shore + 30} ${W * .8} ${shore + 10}" fill="none" stroke="#D4B47F" stroke-width="2" stroke-dasharray="6 8"/>
+      <text x="24" y="40" class="shead1">👣 Менің экологиялық ізім</text><text x="24" y="66" class="ssub">Әр адам Жерде із қалдырады. Бүгінгі сабақтан қандай із қалдырдың? Өз ізіңді бас: 🟢 → 🟡 → 🔴</text>
+      <text x="40" y="${shore + 50}" class="ssub2">🖐️ Мұғалімдер мен қонақтардың қол ізі →</text>${svg}</svg>
+      <div class="legend2">${D.footprints.map(f => `<span style="background:${f.c}">👣 ${esc(f.n)} · <b>${cnt(f.k)}</b></span>`).join("")}<span style="background:#6B4E2E">🖐️ ${H.length}</span>
+        <button class="tb" id="addH">🖐️ + қол ізі</button>${hands.length ? `<button class="tb" id="delH">↺</button>` : ""}</div>
+      <div class="scroll"><b>✉️ 2050 жылғы адамға хат</b><div>Дәптерге 2 сөйлем: <i>«2050 жылы сен ... . Біз 2026 жылы ... үшін ... істедік.»</i></div>${ls.map(l => `<p>🍾 ${esc(l)}</p>`).join("")}</div>
+      <div class="bqr"><div>${qrSvg(stuUrl, { logo: "🎒" })}<span>🎒 Оқушы: із + хат</span></div><div>${qrSvg(guestUrl, { c1: "#D99A1E", c2: "#E8573A", logo: "🖐️" })}<span>🖐️ Мұғалім, қонақ</span></div></div></div>`;
+    $$("[data-f]").forEach(b => b.onclick = () => { const n = b.dataset.f, o = ["g", "y", "r", undefined]; const nx = o[(o.indexOf(ft[n]) + 1) % 4]; if (nx) ft[n] = nx; else delete ft[n]; LS.set("feet", ft); chime(nx === "g" ? 800 : nx === "y" ? 640 : 480); draw(); });
+    $("#addH").onclick = () => { const o = ["g", "y", "r"]; hands.push("g"); LS.set("hands", hands); chime(700); draw(); };
+    if ($("#delH")) $("#delH").onclick = () => { hands.pop(); LS.set("hands", hands); draw(); }; };
   onCloud = draw; draw(); };
+/* 12. Үй тапсырмасы */
+R.home = () => { $("#body").innerHTML = `<div class="card" style="margin-bottom:14px;padding:10px 18px;font-size:18px">🏠 Өз деңгейіңді таңда. ${esc(D.lesson.book)}. Контур карта — №3 парақтың артында.</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">${D.homework.map((h, k) => `<div class="card hmc" style="--hc:${["#1F9D6B", "#0E7C9B", "#E8573A"][k]}"><div style="display:flex;align-items:center;gap:10px"><span class="lv">${h.lv}</span><span style="font-size:40px">${h.i}</span><b style="color:var(--hc);font-size:20px">${esc(h.n)}</b></div><p style="font-size:20px;line-height:1.35">${esc(h.t)}</p></div>`).join("")}</div>
+  <div style="text-align:center;margin-top:26px;font-size:40px;font-weight:900;color:var(--sea)">Сау болыңыздар! 🌍 Жерге қамқор болайық!</div>`; };
 
 /* ================= ОҚУШЫ ТЕЛЕФОНЫ ================= */
 function stuInit() { document.body.innerHTML = `<div class="phone" id="ph"></div>`; let me = LS.get("me");
@@ -268,10 +328,10 @@ function guestInit() { document.body.innerHTML = `<div class="phone" id="ph"></d
       <p class="small mut">🗺️ Контур карта · 🌍 глобус · 📄 жұмыс парағы · 📒 дәптер · 📖 оқулық · 🖥️ интерактивті тақта</p></div>
     <div class="card"><h2>🌿 Сабақтың «EPI индексі»</h2><p class="small">Елдер сияқты сабақты да 0–100 бойынша бағалаңыз.</p>
       <input type="range" id="gr" min="0" max="100" value="${mine ? mine.s : 75}"><div style="text-align:center;font-size:42px;font-weight:900" id="gv">${mine ? mine.s : 75}</div>
-      <textarea id="gt" rows="3" placeholder="Пікіріңіз, ұсынысыңыз">${esc(mine ? mine.t : "")}</textarea><button class="btn" id="gsend" style="width:100%;margin-top:8px">Жіберу</button><div id="gok" class="mut small"></div></div>`;
+      <input type="text" id="gn" placeholder="Аты-жөніңіз (тақтада 🖐️ қол ізіңіздің астында шығады)" value="${esc(mine && mine.n ? mine.n : "")}" style="margin-bottom:8px"><textarea id="gt" rows="3" placeholder="Пікіріңіз, ұсынысыңыз">${esc(mine ? mine.t : "")}</textarea><button class="btn" id="gsend" style="width:100%;margin-top:8px">Жіберу</button><div id="gok" class="mut small"></div></div>`;
   const col = v => v >= 60 ? "#1F9D6B" : v >= 40 ? "#E3A21A" : "#D9452B"; const up = () => { $("#gv").textContent = $("#gr").value; $("#gv").style.color = col(+$("#gr").value); }; up();
   $("#gr").oninput = up;
-  $("#gsend").onclick = () => { const v = { s: +$("#gr").value, t: $("#gt").value.trim().slice(0, 300) }; LS.set("gs", v); CL.put("guests/" + uid(), v).then(() => $("#gok").textContent = "✅ Рахмет! Бағаңыз тақтада көрінеді.").catch(() => $("#gok").textContent = "Интернет жоқ, кейін қайта жіберіңіз."); }; }
+  $("#gsend").onclick = () => { const v = { s: +$("#gr").value, t: $("#gt").value.trim().slice(0, 300), n: ($("#gn") ? $("#gn").value.trim().slice(0, 30) : "") || "Қонақ" }; LS.set("gs", v); CL.put("guests/" + uid(), v).then(() => $("#gok").textContent = "✅ Рахмет! Бағаңыз тақтада көрінеді.").catch(() => $("#gok").textContent = "Интернет жоқ, кейін қайта жіберіңіз."); }; }
 
 /* мұғалім PIN */
 function gate() { if (sessionStorage.getItem("hs11pin") === "1" || Q.get("pin") === "2311") { sessionStorage.setItem("hs11pin", "1"); return boardInit(); }
