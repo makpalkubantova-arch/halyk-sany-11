@@ -80,7 +80,7 @@ function boardInit() {
 /* түсіндірме бейнеролик: 4 бөлім, әр бөлім соңында өзі тоқтайды */
 const VID = [[0, 29.5, "1 · Халық саны қалай өсті", "time"], [29.5, 48.5, "2 · Себеп → салдар", "chain"], [48.5, 61, "3 · EPI деген не", "lab"], [61, 96.5, "4 · Қорытынды", "debate"]];
 function videoModal(auto) {
-  modal(`<h2 style="margin:0 0 8px">🎬 Жаңа тақырып: түсіндірме</h2><video id="vid" src="tusindiru.mp4?v=20261116e" controls playsinline preload="auto" style="width:100%;border-radius:14px;background:#0B1B2E"></video>
+  modal(`<h2 style="margin:0 0 8px">🎬 Жаңа тақырып: түсіндірме</h2><video id="vid" src="tusindiru.mp4?v=20261116f" controls playsinline preload="auto" style="width:100%;border-radius:14px;background:#0B1B2E"></video>
     <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;justify-content:center">${VID.map((v, k) => `<button class="tb" data-seg="${k}">${v[2]}</button>`).join("")}</div>
     <p class="mut small" style="margin:8px 0 0">Бөлімді бассаңыз, сол жерден басталып, бөлім соңында өзі тоқтайды. Дыбысы жоқ — үстінен өзіңіз түсіндіресіз.</p>`);
   $(".mbox").style.maxWidth = "1000px";
@@ -99,7 +99,9 @@ function drawScore() { const p = S.pts, gr = S.grp; $("#sgs").innerHTML = D.grou
   return `<div class="sg" data-g="${g.k}" style="--gc:${g.c};--gs:${g.soft}"><span class="gi">${g.i}</span><div><b>${g.n}</b><small>${n} оқушы</small></div>
     <button data-add="${g.k}" data-n="-1">−</button><span class="pt">${p[g.k] || 0}</span><button data-add="${g.k}">+</button></div>`; }).join(""); }
 let stop = () => {};
-function go(i) { i = Math.max(0, Math.min(D.stages.length - 1, i)); stop(); stop = () => {}; onCloud = () => {}; S.i = i; const st = D.stages[i];
+function go(i) { i = Math.max(0, Math.min(D.stages.length - 1, i)); const prevId = (D.stages[S.i] || {}).id; stop(); stop = () => {}; onCloud = () => {}; S.i = i; const st = D.stages[i];
+  /* үй тапсырмасынан кейін жаңа тақырып бейнеролигі өзі ашылады */
+  if (st.id === "time" && prevId === "hw") setTimeout(() => { if (S.i === i && $("#modal").hidden) videoModal(true); }, 450);
   TM.run = false; TM.left = st.m * 60000; tick();
   $("#chips").innerHTML = D.stages.map((s, k) => `<button class="chip${k === i ? " on" : k < i ? " done" : ""}" data-go="${k}"><b>${k + 1}</b>${esc(s.t)}</button>`).join("");
   $$("[data-go]").forEach(b => b.onclick = () => go(+b.dataset.go));
