@@ -52,6 +52,8 @@ let AC; function chime(f = 660) { try { AC = AC || new AudioContext(); const o =
 const gpick = (key, cur) => `<span class="gp">${D.groups.map(g => `<button class="gpb${cur === g.k ? " on" : ""}" data-gp="${key}" data-g="${g.k}" style="--gc:${g.c}" title="${g.n}">${g.i}</button>`).join("")}</span>`;
 const ptBtns = () => `<div class="ptrow">${D.groups.map(g => `<button class="btn" style="background:${g.c};box-shadow:0 4px 0 #0003" data-add="${g.k}">${g.i} +1</button>`).join("")}</div>`;
 
+/* тізім өзгерсе, ескі топ/із белгілерін тазалау */
+(() => { const v = D.roster.join("|"); if (LS.get("rosterV") !== v) { ["grp", "feet", "hw", "lab", "deb", "pts"].forEach(k => { try { localStorage.removeItem(LS.k + k); } catch {} }); LS.set("rosterV", v); } })();
 /* ================= ТАҚТА ================= */
 const TM = { left: 0, run: false, end: 0 };
 function boardInit() {
