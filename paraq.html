@@ -14,7 +14,7 @@ h2{font-size:16px;margin:10px 0 4px;color:#0E7C9B}table{width:100%;border-collap
 </style></head><body>
 <div class="np bar"><button onclick="print()">🖨️ Басып шығару / PDF</button><a href="index.html"><button>← Басты бет</button></a></div>
 <div id="out"></div>
-<script src="map.js?v=20261117a"></script><script src="data.js?v=20261117a"></script><script>
+<script src="map.js?v=20261117c"></script><script src="data.js?v=20261117c"></script><script>
 const D = DATA, L = D.lesson, f = n => String(n).replace(".", ",");
 const hd = (no, t, kind) => `<div class="hd"><div><b>№${no} жұмыс парағы · ${t}</b><br><small>${L.subject} · ${L.topic} · ${L.date} · ${kind}</small></div><div class="nm">Аты-жөні: <br><br>Тобы: </div></div>`;
 const map = (ids, h = 330) => { let p = "", tx = ""; const num = {}; ids.forEach((id, k) => num[id] = k + 1);

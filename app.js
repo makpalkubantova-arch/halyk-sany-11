@@ -133,12 +133,12 @@ R.breath = () => {
 /* 2. Топқа бөліну: таңдау бойынша */
 R.groups = () => { let sel = null;
   const draw = () => { const gr = S.grp, free = D.roster.filter(n => !gr[n]);
-    $("#body").innerHTML = `<div class="card" style="margin-bottom:12px;padding:10px 16px"><b>Сұрақ:</b> «Қай аймақта өмір сүрер едің?» Атыңды бас → өзің таңдаған аймақты бас. Бұл аймақтың 8 елін сабақ бойы зерттейсің.
+    $("#body").innerHTML = `<div style="display:flex;flex-direction:column;height:100%"><div class="card" style="margin-bottom:12px;padding:10px 16px;flex:none"><b>Сұрақ:</b> «Қай аймақта өмір сүрер едің?» Атыңды бас → өзің таңдаған аймақты бас. Бұл аймақтың 8 елін сабақ бойы зерттейсің.
       <div class="pool" style="margin:8px 0 0">${free.map(n => `<button class="nm${sel === n ? " sel" : ""}" data-n="${esc(n)}">${esc(n)}</button>`).join("") || `<span class="mut">✅ Бәрі таңдады</span>`}</div></div>
-      <div class="gcards" style="height:calc(100% - ${free.length ? 130 : 96}px)">${D.groups.map(g => `<div class="gcard" data-gc="${g.k}" style="--gc:${g.c};--gs:${g.soft}">
+      <div class="gcards" style="flex:1;min-height:0;height:auto">${D.groups.map(g => `<div class="gcard" data-gc="${g.k}" style="--gc:${g.c};--gs:${g.soft}">
         <div style="display:flex;gap:12px;align-items:center"><div class="pic" style="height:90px;width:90px;font-size:56px;flex:0 0 90px">${g.i}</div><div><h2 style="margin:0">${g.n}</h2><p>${g.d}</p></div></div>
         <p class="small" style="margin-top:8px"><b>Елдері:</b> ${D.countries.filter(c => c.g === g.k).map(c => c.n).join(", ")}</p>
-        <div class="names">${Object.keys(gr).filter(n => gr[n] === g.k).map(n => `<button class="nm" data-back="${esc(n)}">${esc(n)}</button>`).join("")}</div></div>`).join("")}</div>`;
+        <div class="names">${Object.keys(gr).filter(n => gr[n] === g.k).map(n => `<button class="nm" data-back="${esc(n)}">${esc(n)}</button>`).join("")}</div></div>`).join("")}</div></div>`;
     $$("[data-n]").forEach(b => b.onclick = () => { sel = sel === b.dataset.n ? null : b.dataset.n; draw(); });
     $$("[data-gc]").forEach(c => c.onclick = e => { if (e.target.closest("[data-back]") || !sel) return; const gr = S.grp; gr[sel] = c.dataset.gc; S.grp = gr; sel = null; chime(720); draw(); drawScore(); });
     $$("[data-back]").forEach(b => b.onclick = () => { const gr = S.grp; delete gr[b.dataset.back]; S.grp = gr; draw(); drawScore(); }); };
