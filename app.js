@@ -58,14 +58,15 @@ function boardInit() {
   document.body.className = "board";
   document.body.innerHTML = `<div id="stage"><header class="top"><div class="brand"><span class="logo">🌍</span><div><b>${esc(D.lesson.title)}</b><small>${esc(D.lesson.subject)} · ${esc(D.lesson.date)}</small></div></div>
     <nav class="chips" id="chips"></nav><div class="timer" id="timer"><b id="tt">0:00</b><button id="tgo">▶</button><button id="tre">↺</button></div>
-    <button class="tb" id="qrB">📱 QR</button><button class="tb" id="fsB">⛶</button></header>
+    <button class="tb" id="vidB" title="Түсіндірме бейнеролик">🎬</button><button class="tb" id="qrB" title="QR">📱</button><button class="tb" id="fsB">⛶</button></header>
     <section class="shead" id="shead"></section><main class="body" id="body"></main>
     <footer class="score"><button class="nav" id="prev">‹</button><div id="sgs" style="display:flex;gap:12px;flex:1"></div><button class="nav" id="next">›</button></footer></div>
     <div class="modal" id="modal" hidden><div class="mbox"><button class="mx" id="mx">✕</button><div id="mc"></div></div></div>`;
   const fit = () => { const k = Math.min(innerWidth / 1600, innerHeight / 900); $("#stage").style.transform = `translate(-50%,-50%) scale(${k})`; }; addEventListener("resize", fit); fit();
   $("#prev").onclick = () => go(S.i - 1); $("#next").onclick = () => go(S.i + 1);
   $("#fsB").onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {});
-  $("#mx").onclick = () => $("#modal").hidden = true;
+  $("#mx").onclick = () => { $("#modal").hidden = true; $("#mc").innerHTML = ""; $(".mbox").style.maxWidth = ""; };
+  $("#vidB").onclick = videoModal;
   $("#qrB").onclick = () => modal(`<h2 style="margin:0 0 6px">📱 Телефоны барлар үшін</h2><div style="display:flex;gap:24px;justify-content:center">
     <div class="qr">${qrSvg(stuUrl, { logo: "🎒" })}<b>Оқушы</b></div><div class="qr">${qrSvg(guestUrl, { c1: "#D99A1E", c2: "#E8573A", logo: "👥" })}<b>Қонақ</b></div></div>
     <p class="mut small">Телефон міндетті емес: барлық тапсырма тақтада, картада, жұмыс парағында орындалады.</p>`);
@@ -75,6 +76,20 @@ function boardInit() {
   document.addEventListener("click", e => { const a = e.target.closest("[data-add]"); if (a) addPt(a.dataset.add, +(a.dataset.n || 1)); });
   addEventListener("keydown", e => { if (e.target.tagName === "TEXTAREA" || e.target.tagName === "INPUT") return; if (e.key === "ArrowRight") go(S.i + 1); if (e.key === "ArrowLeft") go(S.i - 1); });
   setInterval(pull, 4000); pull(); go(S.i);
+}
+/* түсіндірме бейнеролик: 4 бөлім, әр бөлім соңында өзі тоқтайды */
+const VID = [[0, 29.5, "1 · Халық саны қалай өсті", "time"], [29.5, 48.5, "2 · Себеп → салдар", "chain"], [48.5, 61, "3 · EPI деген не", "lab"], [61, 96.5, "4 · Қорытынды", "debate"]];
+function videoModal() {
+  modal(`<h2 style="margin:0 0 8px">🎬 Жаңа тақырып: түсіндірме</h2><video id="vid" src="tusindiru.mp4?v=20261116d" controls playsinline preload="auto" style="width:100%;border-radius:14px;background:#0B1B2E"></video>
+    <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;justify-content:center">${VID.map((v, k) => `<button class="tb" data-seg="${k}">${v[2]}</button>`).join("")}</div>
+    <p class="mut small" style="margin:8px 0 0">Бөлімді бассаңыз, сол жерден басталып, бөлім соңында өзі тоқтайды. Дыбысы жоқ — үстінен өзіңіз түсіндіресіз.</p>`);
+  $(".mbox").style.maxWidth = "1000px";
+  const v = $("#vid"); let stop = null;
+  const seek = t => { if (v.readyState >= 1) v.currentTime = t; else v.addEventListener("loadedmetadata", () => v.currentTime = t, { once: true }); };
+  const play = k => { stop = VID[k][1]; seek(VID[k][0] + 0.05); v.play().catch(() => {}); document.querySelectorAll("[data-seg]").forEach(b => b.style.background = +b.dataset.seg === k ? "#E3F3F8" : "#fff"); };
+  const iv = setInterval(() => { if (!document.body.contains(v)) return clearInterval(iv); if (stop !== null && v.currentTime >= stop - 0.5) { v.pause(); stop = null; } }, 40);
+  document.querySelectorAll("[data-seg]").forEach(b => b.onclick = () => play(+b.dataset.seg));
+  const cur = VID.findIndex(x => x[3] === D.stages[S.i].id); if (cur >= 0) { seek(VID[cur][0] + 0.05); document.querySelector(`[data-seg="${cur}"]`).style.background = "#E3F3F8"; }
 }
 function modal(h) { $("#mc").innerHTML = h; $("#modal").hidden = false; }
 function tick() { const ms = TM.run ? Math.max(0, TM.end - Date.now()) : TM.left; if (TM.run && ms <= 0) { TM.run = false; TM.left = 0; chime(440); }

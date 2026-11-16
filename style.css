@@ -109,3 +109,48 @@ input[type=range]{width:100%}textarea,input[type=text]{width:100%;border:2px sol
 .gp{display:inline-flex;gap:4px}.gpb{border:3px solid var(--gc);background:#fff;border-radius:12px;padding:2px 8px;font-size:20px;font-weight:900}.gpb.on{background:var(--gc)}
 .ptrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
 .qr{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:20px}
+
+/* ===== Жаңа дизайн: «Түнгі Жер · аврора» (осы блокты өшірсе, ескі түр қайтады) ===== */
+:root{--sea:#0A8F9E;--leaf:#12A66A;--sun:#F2A900;--red:#E8452C;--aur1:#17E0B8;--aur2:#7C5CFF;--aur3:#FF6B4A;--aur4:#FFC233;
+ --night:radial-gradient(2px 2px at 9% 14%,#fff 50%,transparent 52%),radial-gradient(1.5px 1.5px at 23% 8%,#CFE0FF 50%,transparent 52%),radial-gradient(2px 2px at 41% 5%,#fff 50%,transparent 52%),radial-gradient(1.5px 1.5px at 58% 11%,#CFE0FF 50%,transparent 52%),radial-gradient(2px 2px at 71% 4%,#fff 50%,transparent 52%),radial-gradient(1.5px 1.5px at 33% 96%,#CFE0FF 50%,transparent 52%),radial-gradient(2px 2px at 64% 93%,#fff 50%,transparent 52%),radial-gradient(1.5px 1.5px at 93% 62%,#fff 50%,transparent 52%),radial-gradient(1.5px 1.5px at 3% 55%,#CFE0FF 50%,transparent 52%),
+ radial-gradient(60% 50% at 90% -8%,rgba(23,224,184,.45),transparent 62%),radial-gradient(52% 55% at 2% 110%,rgba(124,92,255,.5),transparent 62%),radial-gradient(36% 36% at 56% 114%,rgba(255,107,74,.3),transparent 66%),linear-gradient(160deg,#0B1026 0%,#131D4A 55%,#0A2B3C 100%)}
+body.board{background:#060915}
+#stage{background:var(--night)}
+.top{background:rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.14)}
+.brand b{color:#fff}.brand small{color:#A9B8DC}
+.brand .logo{background:conic-gradient(from 200deg,var(--aur1),var(--aur2),var(--aur3),var(--aur4),var(--aur1));box-shadow:0 0 0 3px rgba(255,255,255,.2),0 0 26px rgba(23,224,184,.65)}
+.chip{background:rgba(255,255,255,.09);color:#C9D4F0;border:1px solid rgba(255,255,255,.1);transition:transform .2s}
+.chip b{color:#7CF3DA}
+.chip.on{background:linear-gradient(135deg,var(--aur1),var(--aur2));color:#fff;border-color:transparent;box-shadow:0 8px 20px rgba(124,92,255,.6);transform:translateY(-3px)}
+.chip.done{background:rgba(23,224,184,.2);color:#D8FFF5}.chip.done b{color:#fff}
+.timer{background:linear-gradient(135deg,var(--aur3),var(--aur4));color:#1A1030;box-shadow:0 6px 20px rgba(255,107,74,.5)}
+.timer button{background:rgba(11,16,38,.88);color:#fff}.timer.warn b{color:#9B0020}
+.top .tb{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.24);color:#fff}
+.shead h1{color:#fff;text-shadow:0 3px 22px rgba(124,92,255,.65)}
+.shead .n{background:linear-gradient(135deg,var(--aur3),var(--aur4));color:#1A1030;border-radius:18px;transform:rotate(-6deg);box-shadow:0 8px 22px rgba(255,107,74,.5)}
+.shead .tag{background:rgba(255,255,255,.12);color:#E4ECFF;border:1px solid rgba(255,255,255,.14)}
+.shead .tag.t{background:rgba(255,194,51,.22);color:#FFE39A}.shead .tag.tools{background:rgba(23,224,184,.2);color:#fff}
+.body{left:16px;right:16px;top:158px;bottom:102px;padding:12px 18px;border-radius:30px;background:linear-gradient(180deg,#FFFFFF,#F2FBF8);box-shadow:0 22px 55px rgba(0,0,0,.5),0 0 0 4px rgba(255,255,255,.14)}
+.score{background:rgba(255,255,255,.07);border-top:1px solid rgba(255,255,255,.14)}
+.sg{box-shadow:0 8px 18px rgba(0,0,0,.35)}
+.nav{background:linear-gradient(135deg,var(--aur1),var(--aur2));box-shadow:0 8px 20px rgba(124,92,255,.55)}
+.btn{background:linear-gradient(135deg,#0A8F9E,#7C5CFF);box-shadow:0 4px 0 #3D2A9E}.btn:active{box-shadow:0 1px 0 #3D2A9E}
+.btn.ghost{background:#EEF1FB;box-shadow:0 4px 0 #CCD3EE}.btn.sun{background:linear-gradient(135deg,var(--aur3),var(--aur4));box-shadow:0 4px 0 #B85A12;color:#1A1030}
+.card{border:1px solid #E1ECF2}
+.counter{background:linear-gradient(90deg,#0A8F9E,#7C5CFF 55%,#FF6B4A);-webkit-background-clip:text;background-clip:text;color:transparent}
+.counter small{-webkit-text-fill-color:var(--mut)}
+.qbig{border-left-color:var(--aur3)}
+.tlbar{background:linear-gradient(#7C5CFF,#17E0B8)}
+.ch .c{border-left-color:var(--aur2)}.ch .ar{color:var(--aur2)}
+.out{background:linear-gradient(135deg,#0B1026,#2A1E6B)}
+.hwl b{background:linear-gradient(135deg,var(--aur1),var(--aur2))}
+.modal{background:rgba(6,9,21,.72)}
+/* басты бет пен PIN */
+.home{background:var(--night);background-color:#0B1026}
+.hero{background:linear-gradient(135deg,#12C9A8 -10%,#7C5CFF 55%,#FF6B4A 125%);box-shadow:0 20px 50px rgba(124,92,255,.45)}
+.hero .globe{background:conic-gradient(from 200deg,#17E0B8,#7C5CFF,#FF6B4A,#FFC233,#17E0B8);opacity:.45;filter:blur(2px)}
+.role{box-shadow:0 14px 30px rgba(0,0,0,.35)}.role:hover{transform:translateY(-6px) rotate(-1deg)}
+.mats{box-shadow:0 14px 30px rgba(0,0,0,.3)}
+.top{gap:10px;padding:0 16px}.brand b{font-size:17px;white-space:nowrap}.brand small{white-space:nowrap;font-size:12px}.chips{margin-left:6px;gap:4px}
+.shead{padding:12px 28px 0}.shead>div{display:flex;align-items:center;gap:16px;flex-wrap:wrap}.shead .meta{margin-top:0}
+.chips{flex:1;min-width:0}.chip{flex:1 1 0;min-width:0;max-width:none;padding:5px 7px;font-size:11px;line-height:1.1;max-height:66px;overflow:hidden}.chip b{font-size:14px}
