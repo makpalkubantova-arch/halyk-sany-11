@@ -80,9 +80,9 @@ function boardInit() {
 /* түсіндірме бейнеролик: 4 бөлім, әр бөлім соңында өзі тоқтайды */
 const VID = [[0, 29.5, "1 · Халық саны қалай өсті", "time"], [29.5, 48.5, "2 · Себеп → салдар", "chain"], [48.5, 61, "3 · EPI деген не", "lab"], [61, 96.5, "4 · Қорытынды", "debate"]];
 function videoModal(auto) {
-  modal(`<h2 style="margin:0 0 8px">🎬 Жаңа тақырып: түсіндірме</h2><video id="vid" src="tusindiru.mp4?v=20261116f" controls playsinline preload="auto" style="width:100%;border-radius:14px;background:#0B1B2E"></video>
+  modal(`<h2 style="margin:0 0 8px">🎬 Жаңа тақырып: түсіндірме</h2><video id="vid" src="tusindiru.mp4?v=20261116g" controls playsinline preload="auto" style="width:100%;border-radius:14px;background:#0B1B2E"></video>
     <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;justify-content:center">${VID.map((v, k) => `<button class="tb" data-seg="${k}">${v[2]}</button>`).join("")}</div>
-    <p class="mut small" style="margin:8px 0 0">Бөлімді бассаңыз, сол жерден басталып, бөлім соңында өзі тоқтайды. Дыбысы жоқ — үстінен өзіңіз түсіндіресіз.</p>`);
+    <p class="mut small" style="margin:8px 0 0">Бөлімді бассаңыз, сол жерден басталып, бөлім соңында өзі тоқтайды. Диктор дауысымен (қазақша).</p>`);
   $(".mbox").style.maxWidth = "1000px";
   const v = $("#vid"); let stop = null;
   const seek = t => { if (v.readyState >= 1) v.currentTime = t; else v.addEventListener("loadedmetadata", () => v.currentTime = t, { once: true }); };
