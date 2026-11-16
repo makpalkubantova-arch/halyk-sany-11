@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="kk"><head><meta charset="utf-8"><title>Жұмыс парақтары · 8 миллиард: қаладан — әлемге</title>
+<style>
+@page{size:A4;margin:12mm}*{box-sizing:border-box}body{margin:0;font:13.5px/1.4 "Segoe UI",Arial,sans-serif;color:#10243E;background:#ddd}
+.pg{width:210mm;min-height:297mm;padding:12mm;margin:8mm auto;background:#fff;page-break-after:always;position:relative}
+@media print{body{background:#fff}.pg{margin:0;width:auto;min-height:auto;padding:0}.np{display:none!important}}
+.hd{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #0E7C9B;padding-bottom:6px;margin-bottom:8px}
+.hd b{font-size:18px}.hd small{color:#5B6B80}.nm{border:1.5px solid #10243E;border-radius:6px;padding:4px 10px;min-width:62mm}
+h2{font-size:16px;margin:10px 0 4px;color:#0E7C9B}table{width:100%;border-collapse:collapse}td,th{border:1px solid #6b7c8f;padding:5px 6px;vertical-align:top}th{background:#E3F3F8;font-size:12.5px}
+.ln{border-bottom:1px solid #9aa;height:22px}.map{width:100%;border:1.5px solid #10243E;border-radius:6px}.map path{fill:#fff;stroke:#333;stroke-width:.45}.map path.t{fill:#E9EEF1;stroke:#000;stroke-width:.9}
+.map text{font:700 11px Arial;fill:#B3261E;text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:3px}
+.lg{display:flex;gap:14px;margin:6px 0;font-weight:700}.lg i{display:inline-block;width:22px;height:12px;border:1.5px solid #000;margin-right:4px;vertical-align:-1px}
+.box{border:1.5px dashed #0E7C9B;border-radius:8px;padding:6px 10px;margin:6px 0}.cr{font-size:12px;background:#F3FAFB;border-radius:6px;padding:6px 8px;margin-top:8px}
+.small{font-size:12px;color:#5B6B80}.bar{display:flex;gap:10px;justify-content:center;padding:10px}.bar button{font:700 15px Arial;padding:10px 18px;border:0;border-radius:10px;background:#0E7C9B;color:#fff;cursor:pointer}
+</style></head><body>
+<div class="np bar"><button onclick="print()">🖨️ Басып шығару / PDF</button><a href="index.html"><button>← Басты бет</button></a></div>
+<div id="out"></div>
+<script src="map.js"></script><script src="data.js"></script><script>
+const D = DATA, L = D.lesson, f = n => String(n).replace(".", ",");
+const hd = (no, t, kind) => `<div class="hd"><div><b>№${no} жұмыс парағы · ${t}</b><br><small>${L.subject} · ${L.topic} · ${L.date} · ${kind}</small></div><div class="nm">Аты-жөні: <br><br>Тобы: </div></div>`;
+const map = (ids, h = 330) => { let p = "", tx = ""; const num = {}; ids.forEach((id, k) => num[id] = k + 1);
+  for (const [id, c] of Object.entries(MAP)) { p += `<path d="${c.d}" class="${num[id] ? "t" : ""}"/>`; if (num[id]) tx += `<text x="${c.c[0]}" y="${c.c[1] + 4}">${num[id]}</text>`; }
+  return `<svg class="map" viewBox="0 0 1000 520" style="height:${h}px">${p}${tx}</svg>`; };
+const lg = `<div class="lg">Шартты белгі: <span><i style="background:#7BC96F"></i>жасыл — жоғары сапа (EPI ≥ 60)</span><span><i style="background:#FFD54F"></i>сары — орташа (40–59)</span><span><i style="background:#EF7B6B"></i>қызыл — төмен (&lt; 40)</span></div>`;
+let o = "";
+/* №1 — жұппен */
+o += `<section class="pg">${hd(1, "Себеп → салдар", "👫 жұппен")}
+<p>📖 Оқулықтағы мәтінді оқып, тізбекті толтырыңдар. Әр жолға оқулықтан немесе Экосканердегі Астана деректерінен <b>бір мысал</b> жазыңдар.</p>
+<table><tr><th style="width:30%">Себеп</th><th style="width:35%">Салдар</th><th>Мысал (ел, қала, сан)</th></tr>
+${D.chain.map((c, k) => `<tr><td><b>${c[0]}</b></td><td>${k === 0 ? c[1] : `<div class="ln"></div><div class="ln"></div>`}</td><td><div class="ln"></div><div class="ln"></div></td></tr>`).join("")}</table>
+<h2>Халық санының уақыт таспасы — дәптердегі графикке сүйеніп жаз</h2>
+<table><tr><th>Миллиард</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
+<tr><td>Жылы</td><td>1804</td><td></td><td></td><td>1974</td><td></td><td></td><td>2011</td><td></td></tr><tr><td>Неше жылда қосылды</td><td>—</td><td></td><td>33</td><td></td><td></td><td>12</td><td></td><td></td></tr></table>
+<div class="box">❓ Неге әр келесі миллиард тезірек қосылды? <div class="ln"></div><div class="ln"></div></div>
+<div class="box">❓ БҰҰ болжамы бойынша халық саны шамамен қай жылдары шыңына жетеді? Неге кейін азаяды? <div class="ln"></div><div class="ln"></div><div class="ln"></div></div>
+<div class="box">🌉 Астана (≈1,6 млн) мен Дели (≈33 млн): Делидің ауасы неге әлдеқайда лас? Тек халық санына байланысты ма? <div class="ln"></div><div class="ln"></div><div class="ln"></div></div>
+<div class="cr"><b>Бағалау критерийі:</b> халық саны мен қоршаған ортаның байланысын себеп-салдар арқылы түсіндіреді. ☐ 5 салдар жазылды ☐ 3 мысал келтірілді ☐ сұрақтарға жауап берілді</div></section>`;
+/* №2 — топтық, әр топқа бөлек */
+D.groups.forEach(g => { const L8 = D.countries.filter(c => c.g === g.k);
+  o += `<section class="pg">${hd(2, "Жіктеу зертханасы — " + g.i + " " + g.n, "👥 топпен · 🗺️ контур карта · 🌍 глобус")}
+  <p>1) 🌍 Глобустан әр елді тап, материгін жаз. 2) Елді EPI бойынша жікте. 3) 🗺️ Контур картада нөмірленген елді түспен боя. 4) Тақтаға шығып, елді «себетке» сал.</p>
+  ${map(L8.map(c => c.id))}${lg}
+  <table><tr><th>№</th><th>Ел</th><th>Халқы, млн (БҰҰ 2024)</th><th>EPI 2026 ұпайы (орны)</th><th>Материгі (глобус)</th><th>Сапа тобы</th></tr>
+  ${L8.map((c, k) => `<tr><td>${k + 1}</td><td><b>${c.n}</b></td><td>${f(c.pop)}</td><td>${f(c.epi)} (${c.r})</td><td></td><td></td></tr>`).join("")}</table>
+  <div class="box">❓ Біздің аймақта халық саны мен қоршаған орта сапасы арасында байланыс бар ма? Бір «ерекше» елді атаңдар, неге солай? <div class="ln"></div><div class="ln"></div><div class="ln"></div></div>
+  <div class="cr"><b>Бағалау критерийі:</b> елдерді қоршаған орта сапасы бойынша жіктейді. ☐ 8 ел глобустан табылды ☐ 8 ел дұрыс жіктелді ☐ картада дұрыс боялды ☐ қорытынды жасалды</div></section>`; });
+/* №3 — жеке */
+const ids3 = ["246", "356", "398", "392", "466", "076", "496"];
+o += `<section class="pg">${hd(3, "Өзіңді тексер", "🙋 жеке · A / B / C деңгей")}
+<p>Бір деңгейді таңда (батыл болсаң — екеуін). Контур карта мен оқулықты қолдануға болады.</p>
+${map(ids3, 270)}<div class="small">1 — Финляндия, 2 — Үндістан, 3 — Қазақстан, 4 — Жапония, 5 — Мали, 6 — Бразилия, 7 — Моңғолия</div>
+<div class="box"><b>A · білу.</b> 1–6 елдерді EPI бойынша жікте: Финляндия 71,0 · Үндістан 22,5 · Қазақстан 41,3 · Жапония 63,2 · Мали 23,6 · Бразилия 48,3. Картада үш түспен боя.<br>
+Жоғары: ______________________ Орташа: ______________________ Төмен: ______________________</div>
+<div class="box"><b>B · қолдану.</b> Қазақстан қай топта? EPI-ді төмендететін 2 себеп пен көтеретін 1 себепті жаз (Экосканердегі Астана деректерін қолдан).<div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div></div>
+<div class="box"><b>C · талдау.</b> Халқы көп, бірақ сапасы жоғары ел (4) мен халқы аз, бірақ сапасы төмен ел (7) неге солай? 4–5 сөйлеммен дәлелде.<div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div></div>
+<div class="box">👣 <b>Менің экологиялық ізім:</b> ☐ 🟢 түсіндім, түсіндіре аламын ☐ 🟡 сұрағым бар ☐ 🔴 көмек керек. Сұрағым: __________________________________</div>
+<div class="cr"><b>Дескриптор:</b> A — елдерді дұрыс жіктейді (1 б.) · B — Қазақстанның орнын себептермен түсіндіреді (2 б.) · C — халық саны жалғыз фактор емес екенін дәлелдейді (3 б.)</div></section>`;
+/* Кілт */
+o += `<section class="pg" id="kilt"><div class="hd"><div><b>🔑 Кілт — мұғалімге</b><br><small>${L.topic}</small></div></div>
+<h2>№1</h2><table>${D.chain.map(c => `<tr><td>${c[0]}</td><td>${c[1]}</td></tr>`).join("")}</table>
+<p>Таспа: 1804 · 1927 · 1960 · 1974 · 1987 · 1999 · 2011 · 2022 (123 · 33 · 14 · 13 · 12 · 12 · 11 жыл). Себебі — өлім азайды (медицина, азық), туу жоғары қалды. Шың — шамамен 2080-жылдардың ортасы (≈10,3 млрд), кейін туу азаяды (урбанизация, білім).</p>
+<h2>№2</h2><table><tr><th>Ел</th><th>EPI</th><th>Топ</th><th>Материк</th></tr>${D.countries.map(c => `<tr><td>${c.n}</td><td>${f(c.epi)}</td><td>${c.epi >= 60 ? "жоғары" : c.epi >= 40 ? "орташа" : "төмен"}</td><td>${({ "356": "Еуразия (Азия)", "156": "Еуразия (Азия)", "050": "Еуразия (Азия)", "586": "Еуразия (Азия)", "566": "Африка", "360": "Еуразия (Азия) / аралдар", "818": "Африка", "392": "Еуразия (Азия), аралдар", "124": "Солтүстік Америка", "231": "Африка", "466": "Африка" })[c.id] || "Еуразия"}</td></tr>`).join("")}</table>
+<h2>№3</h2><p>A: жоғары — Финляндия, Жапония; орташа — Қазақстан, Бразилия; төмен — Үндістан, Мали.<br>B: орташа (41,3; 84-орын). Төмендетеді: көмір ЖЭО, қала ауасы, су сапасы; көтереді: тығыздық аз, қорғалатын аумақтар.<br>C: Жапония — технология, заң, тазарту; Моңғолия — көмірмен жылыту, Ұлан-Батыр ауасы, шөлейттену.</p>
+<p class="cr">Деректер: БҰҰ World Population Prospects 2024 (халық, шамамен); Yale EPI 2026 (177 ел).</p></section>`;
+document.getElementById("out").innerHTML = o;
+</script></body></html>
